@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/craftify-logo.png">
+    <title>Craftify Blog - Mug Design and Inspiration</title>
+    <link rel="stylesheet" href="blog-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.blog-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    color: #2878eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Header Styles */
+header {
+    background-color: #2878eb;
+    color: #fff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 50px;
+    margin-right: 1rem;
+}
+
+header h1 {
+    font-size: 1.5rem;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-left: 1rem;
+}
+
+nav ul li a {
+    color: #fff;
+}
+
+nav ul li a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Main Content Styles */
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#featured-post {
+    margin-bottom: 2rem;
+}
+
+#featured-post article {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 2rem;
+}
+
+#posts {
+    flex: 2;
+}
+
+aside {
+    flex: 1;
+}
+
+article {
+    background-color: #fff;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+article h2 {
+    color: #2878eb;
+    margin-bottom: 1rem;
+}
+
+article img {
+    margin-bottom: 1rem;
+}
+
+.author {
+    font-weight: bold;
+}
+
+.comments {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+}
+
+.comments ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+aside section {
+    background-color: #fff;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+aside h3 {
+    margin-bottom: 1rem;
+    color: #2878eb;
+}
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background-color: #e0e0e0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+}
+
+#search-form, #subscribe-form {
+    display: flex;
+}
+
+#search-form input, #subscribe-form input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 3px 0 0 3px;
+}
+
+#search-form button, #subscribe-form button {
+    padding: 0.5rem 1rem;
+    background-color: #2878eb;
+    color: #fff;
+    border: none;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+}
+
+/* Footer Styles */
+.blog-footer {
+    background-color: #2878eb;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.social-media a {
+    color: #fff;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+}
+    </style>
+</head>
+<body class="blog-body">
+    <header>
+        <div class="logo">
+            <img src="assets/craftify-logo.png" alt="Craftify Logo">
+            <h1>Craftify Blog</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="products.html">Catalogue</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <button id="menu-toggle" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <main>
+        <section id="featured-post">
+            <article>
+                <img src="assets/mug-design-process.jpg" alt="Mug Design Process">
+                <h2>The Art of Mug Design: From Concept to Creation</h2>
+                <p>Dive into the fascinating world of mug design with Craftify. Learn about our creative process, from initial sketches to the final product.</p>
+                <a href="#" class="read-more">Read More</a>
+            </article>
+        </section>
+
+        <div class="content-wrapper">
+            <section id="posts">
+                <article>
+                    <h2>Creating Your Own Mug: A Step-by-Step Guide</h2>
+                    <img src="assets/5340663.jpg" alt="DIY Mug Creation">
+                    <p>Discover the joy of designing your own mug with Craftify. Our easy-to-use tools allow you to personalize your mug with your favorite colors, patterns, and text. Follow our guide to create a unique piece that reflects your style.</p>
+                    <p>Posted by <span class="author">Jane Doe</span> on <time datetime="2023-10-01">October 1, 2023</time></p>
+                    <div class="comments">
+                        <h3>Comments</h3>
+                        <ul>
+                            <li>John: I love the customization options!</li>
+                            <li>Emily: Can't wait to try this out.</li>
+                        </ul>
+                    </div>
+                </article>
+                <article>
+                    <h2>Top 5 Mug Designs of 2023</h2>
+                    <img src="assets/top-mugs-2023.jpg" alt="Top 5 Mug Designs">
+                    <p>Explore the most popular mug designs of the year. From minimalist patterns to bold graphics, these mugs have captured the hearts of our customers.</p>
+                    <p>Posted by <span class="author">Mike Smith</span> on <time datetime="2023-12-15">December 15, 2023</time></p>
+                </article>
+                <!-- Add more articles as needed -->
+            </section>
+
+            <aside>
+                <section id="about-craftify">
+                    <h3>About Craftify</h3>
+                    <p>Craftify is your go-to destination for unique, personalized mugs. We believe in the power of creativity and self-expression through everyday items.</p>
+                </section>
+
+                <section id="categories">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Mug Design</a></li>
+                        <li><a href="#">Customer Stories</a></li>
+                        <li><a href="#">Crafting Tips</a></li>
+                        <li><a href="#">Product Showcase</a></li>
+                    </ul>
+                </section>
+
+                <section id="tags">
+                    <h3>Tags</h3>
+                    <div class="tag-cloud">
+                        <a href="#" class="tag">#mugs</a>
+                        <a href="#" class="tag">#crafting</a>
+                        <a href="#" class="tag">#design</a>
+                        <a href="#" class="tag">#personalization</a>
+                        <a href="#" class="tag">#giftideas</a>
+                    </div>
+                </section>
+
+                <section id="search">
+                    <h3>Search</h3>
+                    <form id="search-form">
+                        <input type="text" placeholder="Search the blog..." id="search-input">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </section>
+
+                <section id="subscribe">
+                    <h3>Subscribe to Our Newsletter</h3>
+                    <form id="subscribe-form">
+                        <input type="email" placeholder="Enter your email" id="email-input" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="blog-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Craftify. All rights reserved.</p>
+            <div class="social-media">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="blog-scripts.js"></script>
+</body>
+</html>
