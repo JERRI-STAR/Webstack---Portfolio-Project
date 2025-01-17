@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="customize-mug-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Customize Your Mug</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-mug-hot"></i> Craftify
+        </div>
+        <a href="dashboard.html" class="btn">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="customization-form">
+            <h2><i class="fas fa-paint-brush"></i> Customize Your Mug</h2>
+            <form id="mugForm">
+                <div class="form-group">
+                    <label>Mug Name</label>
+                    <input type="text" id="mugName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Style</label>
+                    <select id="mugStyle" required>
+                        <option value="classic">Classic</option>
+                        <option value="modern">Modern</option>
+                        <option value="vintage">Vintage</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Color</label>
+                    <div class="color-options" id="colorOptions">
+                        <div class="color-option selected" style="background: #fff" data-color="white"></div>
+                        <div class="color-option" style="background: #2b6cb0" data-color="blue"></div>
+                        <div class="color-option" style="background: #48bb78" data-color="green"></div>
+                        <div class="color-option" style="background: #ed8936" data-color="orange"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Custom Message</label>
+                    <textarea id="message" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn">Save Design</button>
+            </form>
+        </div>
+
+        <div class="preview-section">
+            <h2><i class="fas fa-eye"></i> Preview</h2>
+            <div class="mug-preview">
+                <i class="fas fa-mug-hot"></i>
+            </div>
+            <div id="previewDetails">
+                <p>Classic White Mug</p>
+                <p>No message added</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle color selection
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                updatePreview();
+            });
+        });
+
+        // Update preview
+        function updatePreview() {
+            const name = document.getElementById('mugName').value || 'Unnamed';
+            const style = document.getElementById('mugStyle').value;
+            const color = document.querySelector('.color-option.selected').dataset.color;
+            const message = document.getElementById('message').value;
+
+            document.getElementById('previewDetails').innerHTML = `
+                <p>${style} ${color} mug: ${name}</p>
+                <p>${message || 'No message added'}</p>
+            `;
+        }
+
+        // Form inputs event listeners
+        ['mugName', 'mugStyle', 'message'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
+        // Form submission
+        document.getElementById('mugForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const mugData = {
+                name: document.getElementById('mugName').value,
+                style: document.getElementById('mugStyle').value,
+                color: document.querySelector('.color-option.selected').dataset.color,
+                message: document.getElementById('message').value,
+                date: new Date().toLocaleDateString()
+            };
+
+            // Get current user and their data
+            const currentUser = localStorage.getItem('currentUser');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === currentUser);
+
+            // Initialize mugs array if it doesn't exist
+            if (!user.mugs) {
+                user.mugs = [];
+            }
+
+            // Add new mug
+            user.mugs.push(mugData);
+
+            // Add to activities
+            user.activities.push(`Created ${mugData.style} ${mugData.color} mug: ${mugData.name}`);
+
+            // Update localStorage
+            const userIndex = users.findIndex(u => u.email === currentUser);
+            users[userIndex] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
