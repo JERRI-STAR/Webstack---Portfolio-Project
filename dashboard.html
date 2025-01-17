@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboard-stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Craftify Dashboard</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-mug-hot"></i>
+            Craftify
+        </div>
+        <button class="btn logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </nav>
+
+    <div class="main-container">
+        <div class="stats-card">
+            <i class="fas fa-mug-hot"></i>
+            <div class="stats-number" id="totalActivities">0</div>
+            <div class="stats-label">Total Mugs Crafted</div>
+        </div>
+
+        <div class="stats-card">
+            <i class="fas fa-calendar-check"></i>
+            <div class="stats-number" id="weeklyGoal">0/10</div>
+            <div class="stats-label">Weekly Goal Progress</div>
+        </div>
+
+        <div class="stats-card">
+            <i class="fas fa-star"></i>
+            <div class="stats-number" id="craftingLevel">1</div>
+            <div class="stats-label">Crafting Level</div>
+        </div>
+
+        <div class="activities-section">
+            <h2><i class="fas fa-list"></i> Mug Crafting Activities</h2>
+            <div class="activity-form">
+                <input type="text" id="activityInput" class="activity-input" placeholder="Add a new mug crafting activity...">
+                <button class="btn add-btn" onclick="addActivity()">
+                    <i class="fas fa-plus"></i> Add Activity
+                </button>
+            </div>
+            <ul id="activities" class="activities"></ul>
+        </div>
+
+        <div class="mugs-section">
+            <h2><i class="fas fa-palette"></i> Your Custom Mugs</h2>
+            <div id="mugGallery" class="mug-gallery">
+                <!-- Mugs will be displayed here -->
+            </div>
+            <a href="customize-mug.html" class="btn add-btn">
+                <i class="fas fa-plus"></i> Design New Mug
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Previous JavaScript remains the same, adding new functions:
+        
+        function updateStats() {
+            document.getElementById('totalActivities').textContent = user.activities.length;
+            document.getElementById('weeklyGoal').textContent = `${user.activities.length % 10}/10`;
+            document.getElementById('craftingLevel').textContent = Math.floor(user.activities.length / 10) + 1;
+        }
+
+        // Modify displayActivities to include icons
+        function displayActivities() {
+            const activitiesList = document.getElementById('activities');
+            activitiesList.innerHTML = '';
+            
+            user.activities.forEach((activity, index) => {
+                const li = document.createElement('li');
+                li.className = 'activity-item';
+                li.innerHTML = `
+                    <span><i class="fas fa-mug-hot"></i> ${activity}</span>
+                    <button class="delete-btn" onclick="deleteActivity(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                activitiesList.appendChild(li);
+            });
+            updateStats();
+        }
+
+        // Modify addActivity to include new stats
+        const originalAddActivity = addActivity;
+        addActivity = function() {
+            originalAddActivity();
+            updateStats();
+        }
+
+        function displayMugs() {
+    const mugGallery = document.getElementById('mugGallery');
+    mugGallery.innerHTML = '';
+    
+    if (user.mugs && user.mugs.length > 0) {
+        user.mugs.forEach(mug => {
+            const mugCard = document.createElement('div');
+            mugCard.className = 'mug-card';
+            mugCard.innerHTML = `
+                <div class="mug-icon">
+                    <i class="fas fa-mug-hot" style="color: ${mug.color}"></i>
+                </div>
+                <div class="mug-details">
+                    <h3>${mug.name}</h3>
+                    <p>${mug.style} style</p>
+                    <p>${mug.message || 'No message'}</p>
+                    <small>Created: ${mug.date}</small>
+                </div>
+            `;
+            mugGallery.appendChild(mugCard);
+        });
+    } else {
+        mugGallery.innerHTML = '<p>No custom mugs yet. Start designing!</p>';
+    }
+}
+
+// Call displayMugs() after the initial page load
+displayMugs();
+
+        // Initial stats display
+        updateStats();
+        displayActivities();
+    </script>
+</body>
+</html>
