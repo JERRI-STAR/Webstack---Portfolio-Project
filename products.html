@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/craftify-logo.png">
+    <link rel="stylesheet" href="products-stylesheet.css">
+    <title>Craftify - Mug Catalog</title>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="products-header">
+        <nav class="main-nav">
+            <div class="logo"> <i class="fas fa-mug-hot"></i>Craftify</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="Canvas.html">Personalize your own mug</a></li>
+            </ul>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                🛒<span id="cart-count">0</span>
+            </div>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Our Mug Collection</h1>
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="ceramic">Ceramic</button>
+            <button class="filter-btn" data-filter="glass">Glass</button>
+            <button class="filter-btn" data-filter="travel">Travel</button>
+        </div>
+        <div class="product-grid" id="product-grid">
+            <!-- Products will be dynamically added here -->
+             <!--<div class="product-card">
+                <img class="product-image" src="classic-mug.jpg" alt="Product image">
+                <div class="product-info">
+                    <h3 class="product-title">Product Title</h3>
+                    <p class="product-price">$9.99</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>--> 
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Craftify. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+            const productGrid = document.getElementById('product-grid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const cartIcon = document.querySelector('.cart-icon');
+            const modal = document.getElementById('cartModal');
+            const closeModal = document.querySelector('.close-modal');
+            let cart = [];
+
+            // Sample product data
+            const products = [
+                { id: 1, name: 'Classic Ceramic Mug', price: 12.99, image: '—Pngtree—3d illustration of mug_14579743.png', category: 'ceramic' },
+                { id: 2, name: 'Glass Coffee Mug', price: 14.99, image: 'pngimg.com - mug_coffee_PNG16878.png', category: 'glass' },
+                { id: 3, name: 'Travel Thermos', price: 24.99, image: 'tumbler-reusable-water-bottle-travel-260nw-2408640671.jpg', category: 'travel' },
+                { id: 4, name: 'Artistic Ceramic Mug', price: 16.99, image: '33504.jpg', category: 'ceramic' },
+                { id: 5, name: 'Double-walled Glass Mug', price: 19.99, image: '341.jpg', category: 'glass' },
+                { id: 6, name: 'Stainless Steel Travel Mug', price: 29.99, image: 'pngwing.com.png', category: 'travel' },
+                { id: 7, name: 'Stainless Steel Thermos Travel Mug', price: 30.99, image: 'thermoses-mug-thermos-l-l-c-thermal-insulation-coffee-cup-travel-mug-fbae811ab081aac5f042f7372829e3c1.png', category: 'travel' }
+            ];
+
+            // Toggle mobile navigation
+            burger.addEventListener('click', () => {
+                nav.classList.toggle('nav-active');
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                burger.classList.toggle('toggle');
+            });
+
+            // Create product cards
+            function createProductCard(product) {
+                const card = document.createElement('div');
+                card.classList.add('product-card');
+                card.dataset.category = product.category;
+
+                card.innerHTML = `
+                    <img src="assets/${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                    </div>
+                `;
+
+                return card;
+            }
+
+            // Populate product grid
+            products.forEach(product => {
+                productGrid.appendChild(createProductCard(product));
+            });
+
+            // Filter products
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.dataset.filter;
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const productCards = document.querySelectorAll('.product-card');
+                    productCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Cart functionality
+            function addToCart(productId) {
+                const product = products.find(p => p.id === parseInt(productId));
+                const existingItem = cart.find(item => item.id === parseInt(productId));
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        quantity: 1
+                    });
+                }
+
+                updateCartCount();
+                updateCartDisplay();
+            }
+
+            function removeFromCart(productId) {
+                cart = cart.filter(item => item.id !== parseInt(productId));
+                updateCartCount();
+                updateCartDisplay();
+            }
+
+            function updateQuantity(productId, change) {
+                const item = cart.find(item => item.id === parseInt(productId));
+                if (item) {
+                    item.quantity = Math.max(0, item.quantity + change);
+                    if (item.quantity === 0) {
+                        removeFromCart(productId);
+                    } else {
+                        updateCartDisplay();
+                    }
+                }
+            }
+
+            function updateCartCount() {
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                document.getElementById('cart-count').textContent = totalItems;
+            }
+
+            function updateCartDisplay() {
+                const cartItems = document.getElementById('cartItems');
+                const cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+                if (cart.length === 0) {
+                    cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                } else {
+                    cartItems.innerHTML = cart.map(item => `
+                        <div class="cart-item">
+                            <img src="/assets/${item.image}" alt="${item.name}">
+                            <div class="cart-item-info">
+                                <div class="cart-item-title">${item.name}</div>
+                                <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                                <div class="cart-item-quantity">
+                                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                                </div>
+                            </div>
+                            <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
+                        </div>
+                    `).join('');
+                }
+
+                document.getElementById('cartTotal').textContent = cartTotal.toFixed(2);
+            }
+
+            // Add to cart button click handler
+            productGrid.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart')) {
+                    const productId = e.target.dataset.id;
+                    addToCart(productId);
+                    showNotification('Item added to cart!');
+                }
+            });
+
+            // Cart modal
+            cartIcon.addEventListener('click', () => {
+                modal.style.display = 'block';
+                updateCartDisplay();
+            });
+
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Checkout function
+            window.checkout = function() {
+                if (cart.length === 0) {
+                    showNotification('Your cart is empty!');
+                    return;
+                }
+
+                // Here you would typically integrate with a payment processor
+                showNotification('Processing your order...');
+                setTimeout(() => {
+                    cart = [];
+                    updateCartCount();
+                    updateCartDisplay();
+                    modal.style.display = 'none';
+                    showNotification('Order placed successfully!');
+                }, 1500);
+            };
+
+            // Notification system
+            function showNotification(message) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background-color: #2878eb;
+                    color: white;
+                    padding: 1rem 2rem;
+                    border-radius: 5px;
+                    z-index: 1000;
+                    animation: fadeIn 0.3s ease-out;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 2000);
+            }
+
+            // Make functions available globally
+            window.updateQuantity = updateQuantity;
+            window.removeFromCart = removeFromCart;
+        });
+    </script>
+
+<div id="cartModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Shopping Cart</h2>
+        <div id="cartItems"></div>
+        <div class="cart-summary">
+            <div class="cart-total">Total: $<span id="cartTotal">0.00</span></div>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
